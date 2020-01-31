@@ -1,0 +1,13 @@
+<html>
+       <head>
+              <title>Homepage</title>
+       </head>
+       <body>
+              <h2>level: {{level}}</h2>
+              <p>Here's the first question for you</p>
+              <form class="puzzle-form" action="/check_answer" method="POST">
+                     <input type="text" name="answer" id="answer" placeholder="Put answer here"><br><br>
+                     <input type="submit" name="submitButton" class="button" value="Submit">
+              </form>
+       </body>
+</html>

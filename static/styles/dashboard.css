@@ -1,0 +1,12 @@
+body {
+       margin: 50px;
+       padding: 10px;
+       background-size: cover;
+       font-family: sans-serif;
+       color: white;
+}
+
+table {
+       border: 2px;
+       border-color: yellow;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+       <head>
+              <meta charset="utf-8">
+              <title>Dashboard - Treasure Hunt by CSE17</title>
+              <link rel="stylesheet" href="{{url_for('static', filename='styles/dashboard.css')}}">
+       </head>
+       <body>
+              <h1 align="center">Current Standings</h1>
+              <div class="table-view">
+                     <table title="Standings" align="center" border="1">
+                            <tr>
+                                   <th class="table-header">Serial No.</th>
+                                   <th class="table-header">Team Name</th>
+                                   <th class="table-header">Current Points</th>              
+                            </tr>
+                            
+                            {% for user in user_list %}
+                            <tr>
+                                   <td>{{loop.index}}</td>
+                                   <td>{{user.name}}</td>
+                                   <td>{{user.level_completed}}</td>
+                            </tr>
+                            {% endfor %}
+
+                     </table>
+              </div>
+       </body>
+</html>
