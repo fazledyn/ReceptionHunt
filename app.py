@@ -64,21 +64,30 @@ def index():
 @login_required
 def check_answer():
     if request.method == 'POST':
-        answer = request.form.get("answer")
-        print(answer)
+        current_level = current_user.level_completed + 1
 
-        if answer == "aloha":
-            print(current_user)
-            user = User.query.filter_by(name=current_user.name).first()
-            new_level = user.level_completed + 1
-            user.level_completed = new_level
-            db.session.commit()
-
-            user = User.query.filter_by(name=current_user.name).first()
-            return render_template("puzzle.html", level=user.level_completed+1)
+        if current_level >= 8:
+            return "Congrats, you have finished it !"
         else:
-            user = User.query.filter_by(name=current_user.name).first()
-            return render_template("puzzle.html", level=current_user.level_completed+1)
+            print(current_level)
+
+            answer = request.form.get("answer")
+            current_puzzle = Quiz.query.filter_by(id=current_level).first()
+
+            print(answer)
+            if answer == current_puzzle.answer:
+                print(current_user)
+                user = User.query.filter_by(name=current_user.name).first()
+                new_level = user.level_completed + 1
+                user.level_completed = new_level
+                db.session.commit()
+
+                user = User.query.filter_by(name=current_user.name).first()
+                return render_template("puzzle.html", level=user.level_completed+1)
+            else:
+                user = User.query.filter_by(name=current_user.name).first()
+                return render_template("puzzle.html", level=current_user.level_completed+1)
+    
     else:
         return "You're not supposed to be here !"
 
