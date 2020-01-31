@@ -86,7 +86,7 @@ def check_answer():
 @app.route("/logout")
 @login_required
 def logout():
-    logout_user(current_user)
+    logout_user()
     return "you're logged out"
 
 
