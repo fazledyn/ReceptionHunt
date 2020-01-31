@@ -6,7 +6,6 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-
 app.config['SECRET_KEY'] = 'TOR_BAAP_ATAF'
 
 db = SQLAlchemy(app)
@@ -95,6 +94,12 @@ def logout():
 def puzzle():
     return render_template("puzzle.html")
 
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    # ordering the leaderboard by the user standings in a descending order
+    user_list = User.query.order_by(User.level_completed.desc())
+    return render_template("dashboard.html", user_list=user_list)
 
 
 if __name__ == "__main__":
