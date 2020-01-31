@@ -21,4 +21,4 @@ Treasure Hunt Website made using Flask and SQLite
   </p>
  </ul>
  
- For more, you can knock me at www.facebook.com/the.excommunicaddo or send me a mail.
+ For more, you can knock me at www.facebook.com/the.excommunicado or send me a mail.
