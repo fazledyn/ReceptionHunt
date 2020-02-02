@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html>
-       <head>
-              <meta charset="utf-8">
-              <title>Dashboard - Treasure Hunt by CSE17</title>
-       </head>
-       <body>
-              <h1 align="center">Current Standings</h1>
-              <div class="table-view">
-                     <table title="Standings" align="center" border="1">
-                            <tr>
-                                   <th class="table-header">Serial No.</th>
-                                   <th class="table-header">Team Name</th>
-                                   <th class="table-header">Current Points</th>              
-                            </tr>
-                            {% for user in user_list %}
-                            <tr>
-                                   <td>{{loop.index}}</td>
-                                   <td>{{user.name}}</td>
-                                   <td>{{user.level_completed}}</td>
-                            </tr>
-                            {% endfor %}
-                     </table>
-              </div>
-       </body>
+    <head>
+        <link rel="stylesheet" href="dashboard.css">
+        <title>Dashboard</title>
+    </head>
+
+    <body>
+        <div align="center">
+                <h1>Current Standings</h1>
+        
+                <table class="content-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team Name</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+
+                <tr>
+                    <td>1</td>
+                    <td>Alpha</td>
+                    <td>7</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Bravo</td>
+                    <td>6</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Charlie</td>
+                    <td>4</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>Delta</td>
+                    <td>3</td>
+                </tr>
+
+                </table>
+        </div>
+    </body>
 </html>

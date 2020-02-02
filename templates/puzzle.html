@@ -1,13 +1,27 @@
-<html>
-       <head>
-              <title>Homepage</title>
-       </head>
-       <body>
-              <h2>level: {{level}}</h2>
-              <p>Here's the first question for you</p>
-              <form class="puzzle-form" action="/check_answer" method="POST">
-                     <input type="text" name="answer" id="answer" placeholder="Put answer here"><br><br>
-                     <input type="submit" name="submitButton" class="button" value="Submit">
-              </form>
-       </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <title>Document</title>
+      <link rel="stylesheet" href="puzzle.css">
+</head>
+<body>
+      <! NAVIGATOR HERE>
+      <div class="puzzle-container">
+            <h1>Think! Think! Think!</h1>
+            <div class="image-container">
+                  <! image here> 
+            </div>
+            <form action="/submit_answer" method="POST">
+                  <div class="form-container">
+                        <div class="textbox">
+                              <input type="text" name="answer" placeholder="Enter your answer here">
+                        </div>
+                        <div>
+                              <input class="button" type="submit" title="Submit">
+                        </div>
+                  </div>
+            </form>
+      </div>
+</body>
 </html>
