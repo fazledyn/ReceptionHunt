@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, url_for
 from flask import render_template
 from flask_login import UserMixin, LoginManager, login_user, current_user, login_required, logout_user
 from flask_sqlalchemy import SQLAlchemy
@@ -11,7 +11,6 @@ app.config['SECRET_KEY'] = 'TOR_BAAP_ATAF'
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +41,7 @@ def load_user(user_id):
 def index():
     if request.method == 'GET':
         return render_template("index.html")
-
+        
     elif request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
@@ -51,8 +50,10 @@ def index():
         user = User.query.filter_by(name=username).first()
 
         if user is not None and password == user.pwd:
+            user_is_logged_in = True
             login_user(user)
-            return render_template("puzzle.html", level=user.level_completed+1)
+        #    return render_template("puzzle.html", level=user.level_completed+1)
+            return redirect(url_for("puzzle"))
         else:
             return "Enter correct username or password"
 
@@ -60,9 +61,9 @@ def index():
         return "Backend FUCKED UP badly"
 
 
-@app.route("/check_answer", methods=['GET', 'POST'])
+@app.route("/puzzle", methods=['GET', 'POST'])
 @login_required
-def check_answer():
+def puzzle():
     if request.method == 'POST':
         current_level = current_user.level_completed + 1
 
@@ -87,21 +88,26 @@ def check_answer():
             else:
                 user = User.query.filter_by(name=current_user.name).first()
                 return render_template("puzzle.html", level=current_user.level_completed+1)
-    
+
+    elif request.method == 'GET' and current_user.level_completed >= 8:
+#        return render_template("puzzle.html", level=current_user.level_completed+1)
+        return "Congrats, Fam !"
     else:
         return "You're not supposed to be here !"
 
 @app.route("/logout")
 @login_required
 def logout():
+    user_is_logged_in = False
     logout_user()
     return "you're logged out"
 
-
+"""
 @app.route("/puzzle")
 @login_required
 def puzzle():
     return render_template("puzzle.html")
+"""
 
 @app.route("/dashboard")
 @login_required
