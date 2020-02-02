@@ -68,7 +68,7 @@ def puzzle():
         current_level = current_user.level_completed + 1
 
         if current_level >= 8:
-            return "Congrats, you have finished it !"
+            return redirect(url_for("congrats"))
         else:
             print(current_level)
 
@@ -91,7 +91,7 @@ def puzzle():
 
     elif request.method == 'GET' and current_user.level_completed >= 8:
 #        return render_template("puzzle.html", level=current_user.level_completed+1)
-        return "Congrats, Fam !"
+        return redirect(url_for("congrats"))
     else:
         return "You're not supposed to be here !"
 
@@ -101,6 +101,14 @@ def logout():
     user_is_logged_in = False
     logout_user()
     return "you're logged out"
+
+
+@app.route("/congrats")
+@login_required
+def congrats():
+    time = "THIS_IS_TIME_STAMP"
+    return render_template("congrats.html", finish_time=time)
+
 
 """
 @app.route("/puzzle")
