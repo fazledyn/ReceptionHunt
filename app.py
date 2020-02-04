@@ -1,3 +1,5 @@
+import hashlib
+
 from flask import Flask, request, redirect, url_for
 from flask import render_template
 from flask_login import UserMixin, LoginManager, login_user, current_user, login_required, logout_user
@@ -16,8 +18,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25), nullable=False, unique=True)
     pwd = db.Column(db.String(80), nullable=False)
+    token = db.Column(db.String(10), nullable=False)
     level_completed = db.Column(db.Integer, default=0)
-    time_completed = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return "ID: %r" %self.id + " Name: " + self.name + " Pass: " + self.pwd
@@ -25,7 +27,6 @@ class User(UserMixin, db.Model):
 
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    image_file_name = db.Column(db.String(30), unique=True)
     answer = db.Column(db.String(20), unique=True)
 
     def __repr__(self):
@@ -48,6 +49,7 @@ def index():
         print(username + "|" + password)
 
         user = User.query.filter_by(name=username).first()
+        password = hashlib.sha256(password.encode()).hexdigest()
 
         if user is not None and password == user.pwd:
             user_is_logged_in = True
@@ -73,6 +75,7 @@ def puzzle():
             print(current_level)
 
             answer = request.form.get("answer")
+            answer = answer.lower()
             current_puzzle = Quiz.query.filter_by(id=current_level).first()
 
             print(answer)
