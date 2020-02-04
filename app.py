@@ -84,14 +84,23 @@ def puzzle():
                 db.session.commit()
 
                 user = User.query.filter_by(name=current_user.name).first()
-                return render_template("puzzle.html", level=user.level_completed+1)
             else:
                 user = User.query.filter_by(name=current_user.name).first()
-                return render_template("puzzle.html", level=current_user.level_completed+1)
 
-    elif request.method == 'GET' and current_user.level_completed >= 8:
-#        return render_template("puzzle.html", level=current_user.level_completed+1)
-        return redirect(url_for("congrats"))
+            imageFile = "images/" + str(current_user.level_completed + 1) + ".JPG"
+            image_link = url_for('static', filename=imageFile)
+            print(image_link)
+            return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
+
+    elif request.method == 'GET':
+        if current_user.level_completed >= 8:
+            return redirect(url_for("congrats"))
+        else:
+            imageFile = "images/" + str(current_user.level_completed + 1) + ".JPG"
+            image_link = url_for('static', filename=imageFile)
+            print(image_link)
+            return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
+        
     else:
         return "You're not supposed to be here !"
 
@@ -109,13 +118,6 @@ def congrats():
     time = "THIS_IS_TIME_STAMP"
     return render_template("congrats.html", finish_time=time)
 
-
-"""
-@app.route("/puzzle")
-@login_required
-def puzzle():
-    return render_template("puzzle.html")
-"""
 
 @app.route("/dashboard")
 @login_required

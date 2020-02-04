@@ -1,0 +1,29 @@
+---------------------------------
+Logins:
+---------------------------------
+u/admin
+p/123
+
+u/root
+p/toor
+
+u/TeamVikings
+p/ragnar
+
+u/Charlie
+p/MATILDA
+
+u/cyberpunks2048
+p/cyberdemons
+---------------------------------
+Quiz answers:
+---------------------------------
+java
+huawei
+flask
+arko
+cse101
+ataf
+cse
+"well, you just can't"
+---------------------------------

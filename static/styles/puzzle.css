@@ -7,7 +7,6 @@ body {
 }
 
 .puzzle-container {
-      width: 450px;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -15,8 +14,23 @@ body {
       color: white;
 }
 
-.puzzle-container h1 {
+.image-container {
+      width: 400px;
+      align-items: center;
+      justify-content: center;
+}
+
+.image-container img {
+      align-content: center;
+      align-self: center;
       width: 100%;
+      height: auto;
+      orientation: landscape;
+      alt: "images by dyn";
+}
+
+.puzzle-container h1 {
+      width: 90%;
       text-align: center;
       color: white;
       float: left;
