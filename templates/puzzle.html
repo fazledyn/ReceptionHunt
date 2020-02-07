@@ -1,13 +1,47 @@
-<html>
-       <head>
-              <title>Homepage</title>
-       </head>
-       <body>
-              <h2>level: {{level}}</h2>
-              <p>Here's the first question for you</p>
-              <form class="puzzle-form" action="/check_answer" method="POST">
-                     <input type="text" name="answer" id="answer" placeholder="Put answer here"><br><br>
-                     <input type="submit" name="submitButton" class="button" value="Submit">
-              </form>
-       </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Puzzle</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/puzzle.css')}}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul class="navigation-list">
+                <li>
+                    <a href="/dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/puzzle">Puzzle</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="puzzle-container">
+        <br>
+        <h2>Current Level : {{level}}</h2>
+        <br>
+        <div class="image-container">
+            <img src={{image_link}} />
+        </div>
+        <form action="/puzzle" method="POST">
+            <div class="form-container">
+                <div class="textbox">
+                    <input type="text" name="answer" placeholder="Enter your answer here">
+                </div>
+                <div>
+                    <input class="button" type="submit" title="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
 </html>

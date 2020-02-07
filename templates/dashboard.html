@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html>
-       <head>
-              <meta charset="utf-8">
-              <title>Dashboard - Treasure Hunt by CSE17</title>
-       </head>
-       <body>
-              <h1 align="center">Current Standings</h1>
-              <div class="table-view">
-                     <table title="Standings" align="center" border="1">
-                            <tr>
-                                   <th class="table-header">Serial No.</th>
-                                   <th class="table-header">Team Name</th>
-                                   <th class="table-header">Current Points</th>              
-                            </tr>
-                            {% for user in user_list %}
-                            <tr>
-                                   <td>{{loop.index}}</td>
-                                   <td>{{user.name}}</td>
-                                   <td>{{user.level_completed}}</td>
-                            </tr>
-                            {% endfor %}
-                     </table>
-              </div>
-       </body>
+
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/dashboard.css')}}">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul class="navigation-list">
+                <li>
+                    <a href="/dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/puzzle">Puzzle</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div align="center">
+        <br>
+        <h2>Current Standings</h2>
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Team Name</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            {%for user in user_list%}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.level_completed}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+    </div>
+</body>
+
 </html>

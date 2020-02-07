@@ -1,12 +1,27 @@
-<html>
-       <head>
-              <title>Homepage</title>
-       </head>
-       <body>
-              <form action="/" method="POST">
-                     <input type="text" name="username" placeholder="Username"><br><br>
-                     <input type="password" name="password" placeholder="Password"><br><br>
-                     <input type="submit" name="" class="button" value="Login">
-              </form>
-       </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Treasure Hunt</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/index.css')}}">
+</head>
+
+<body>
+    <div class="login-box">
+        <h1>Welcome to Treasure Hunt !</h1>
+        <form action="/" method="POST">
+            <div class="textbox">
+                <input type="text" id="username" name="username" placeholder="Username">
+            </div>
+            <div class="textbox">
+                <input type="password" id="password" name="password" placeholder="Password">
+            </div>
+            <div>
+                <input class="button" type="submit" title="Submit">
+            </div>
+        </form>
+    </div>
+</body>
+
 </html>

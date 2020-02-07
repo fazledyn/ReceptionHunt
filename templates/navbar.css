@@ -1,0 +1,43 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+li,
+a {
+    font-family: sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+}
+
+header {
+    background-color: darkolivegreen;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10%;
+}
+
+.logo {
+    cursor: pointer;
+}
+
+.navigation-list {
+    list-style: none;
+}
+
+.navigation-list li {
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.navigation-list li a {
+    transition: all 0.3s ease 0s;
+}
+
+.navigation-list li a:hover {
+    color: whitesmoke;
+}
