@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
-    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 li,
@@ -39,35 +40,4 @@ header {
 
 .navigation-list li a:hover {
     color: whitesmoke;
-}
-
-body {
-    background-color: slategray;
-    font-family: sans-serif;
-    color: white;
-}
-
-.message-container {
-    width: 450px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    align-items: center;
-    justify-content: center;
-}
-
-.message-container h1 {
-    text-align: center;
-    font-size: 22px;
-}
-
-.message-container h4 {
-    text-align: center;
-    font-size: 15px;
-}
-
-.message-container h6 {
-    text-align: center;
-    font-size: 10px;
 }

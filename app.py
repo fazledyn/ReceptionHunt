@@ -46,7 +46,6 @@ def index():
     elif request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
-        print(username + "|" + password)
 
         user = User.query.filter_by(name=username).first()
         password = hashlib.sha256(password.encode()).hexdigest()
@@ -54,10 +53,11 @@ def index():
         if user is not None and password == user.pwd:
             user_is_logged_in = True
             login_user(user)
-        #    return render_template("puzzle.html", level=user.level_completed+1)
+
+            print("admin@backend > ", username, "JUST LOGGED IN")
             return redirect(url_for("puzzle"))
         else:
-            return "Enter correct username or password"
+            return redirect(url_for("index"))
 
     else:
         return "Backend FUCKED UP badly"
@@ -72,8 +72,6 @@ def puzzle():
         if current_level >= 8:
             return redirect(url_for("congrats"))
         else:
-            print(current_level)
-
             answer = request.form.get("answer")
             answer = answer.lower()
             current_puzzle = Quiz.query.filter_by(id=current_level).first()
@@ -103,17 +101,15 @@ def puzzle():
             image_link = url_for('static', filename=imageFile)
             print(image_link)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
-        
+
     else:
         return "You're not supposed to be here !"
 
 @app.route("/logout")
 @login_required
 def logout():
-    user_is_logged_in = False
     logout_user()
-    return "you're logged out"
-
+    return redirect(url_for("index"))
 
 @app.route("/congrats")
 @login_required
