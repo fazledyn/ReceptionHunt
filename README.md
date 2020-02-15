@@ -2,7 +2,12 @@
 Treasure Hunt Website made using Flask and SQLite
 
 <ul>
-  <li> <b> Activating the Environment </b> </li>
+  <li> <b> Overview: </b> </li>
+  <p>
+    Framework: Flask, Database: SQLite
+  </p>
+
+<li> <b> Activating the Environment </b> </li>
 <p>
   In the directory, open CMD and type in-
   <code>
