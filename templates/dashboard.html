@@ -32,6 +32,7 @@
                     <th>Rank</th>
                     <th>Team Name</th>
                     <th>Points</th>
+                    <th>Time Completed</th>
                 </tr>
             </thead>
             {%for user in user_list%}
@@ -39,6 +40,7 @@
                 <td>{{loop.index}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.level_completed}}</td>
+                <td>{{user.last_time}}</td>
             </tr>
             {%endfor%}
         </table>

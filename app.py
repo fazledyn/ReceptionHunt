@@ -1,4 +1,5 @@
 import hashlib
+import time
 
 from flask import Flask, request, redirect, url_for
 from flask import render_template
@@ -20,6 +21,7 @@ class User(UserMixin, db.Model):
     pwd = db.Column(db.String(80), nullable=False)
     token = db.Column(db.String(10), nullable=False)
     level_completed = db.Column(db.Integer, default=0)
+    last_time = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return "ID: %r" %self.id + " Name: " + self.name + " Pass: " + self.pwd
@@ -30,7 +32,7 @@ class Quiz(db.Model):
     answer = db.Column(db.String(20), unique=True)
 
     def __repr__(self):
-        return "Filename: " + self.image_file_name + " Answer: " + self.answer
+        return "ID: " + str(self.id) + " Answer: " + self.answer
 
 
 @login_manager.user_loader
@@ -53,8 +55,7 @@ def index():
         if user is not None and password == user.pwd:
             user_is_logged_in = True
             login_user(user)
-
-            print("admin@backend > ", username, "JUST LOGGED IN")
+            print(user)
             return redirect(url_for("puzzle"))
         else:
             return redirect(url_for("index"))
@@ -74,13 +75,18 @@ def puzzle():
         else:
             answer = request.form.get("answer")
             answer = answer.lower()
-            current_puzzle = Quiz.query.filter_by(id=current_level).first()
+            current_puzzle_no = current_user.token[current_level-1]
+            current_puzzle = Quiz.query.filter_by(id=current_puzzle_no).first()
 
-            print(answer)
+            print("curr level: ", current_level)
+            print("curr puzz no: ", current_puzzle_no)
+            print(current_puzzle)
+
+
             if answer == current_puzzle.answer:
-                print(current_user)
                 user = User.query.filter_by(name=current_user.name).first()
                 new_level = user.level_completed + 1
+                user.last_time = datetime.now()
                 user.level_completed = new_level
                 db.session.commit()
 
@@ -90,16 +96,16 @@ def puzzle():
 
             imageFile = "images/" + str(current_user.level_completed + 1) + ".JPG"
             image_link = url_for('static', filename=imageFile)
-            print(image_link)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
     elif request.method == 'GET':
         if current_user.level_completed >= 8:
             return redirect(url_for("congrats"))
         else:
-            imageFile = "images/" + str(current_user.level_completed + 1) + ".JPG"
+            puzzle_no = current_user.token[current_user.level_completed-1]
+            #imageFile = "images/" + str(current_user.level_completed + 1) + ".JPG"
+            imageFile = "images/" + str(puzzle_no) + ".JPG"
             image_link = url_for('static', filename=imageFile)
-            print(image_link)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
     else:
@@ -122,7 +128,7 @@ def congrats():
 @login_required
 def dashboard():
     # ordering the leaderboard by the user standings in a descending order
-    user_list = User.query.order_by(User.level_completed.desc())
+    user_list = User.query.order_by(User.level_completed.desc(), User.last_time.asc())
     return render_template("dashboard.html", user_list=user_list)
 
 

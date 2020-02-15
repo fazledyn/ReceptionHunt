@@ -2,39 +2,43 @@
 <html lang="en">
 
 <head>
-       <meta charset="UTF-8">
-       <title>Congrats !</title>
-       <link rel="stylesheet" href="{{url_for('static', filename='styles/congrats.css')}}">
+    <meta charset="UTF-8">
+    <title>Puzzle</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/congrats.css')}}">
 </head>
 
 <body>
-       <header>
-              <img class="logo" src="logo.png" alt="logo">
-              <nav>
-                     <ul class="navigation-list">
-                            <li>
-                                   <a href="#">Dashboard</a>
-                            </li>
-                            <li>
-                                   <a href="#">Puzzle</a>
-                            </li>
-                            <li>
-                                   <a href="#">Logout</a>
-                            </li>
-                     </ul>
-              </nav>
-       </header>
-       <div class="message-container">
-              <h1>
-                     You guys have completed all levels !
-              </h1>
-              <h4>
-                     Finishing time: {{finish_time}}
-              </h4>
-              <h6>
-                     Take a screenshot of this ;)
-              </h6>
-       </div>
+    <header>
+        <nav>
+            <ul class="navigation-list">
+                <li>
+                    <a href="/dashboard">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/puzzle">Puzzle</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="puzzle-container">
+        <br>
+        <h2>Congrats !</h2>
+        <br>
+        <div class="image-container">
+            <img src="{{url_for('static',filename='images/CONGRATS.JPG')}}" />
+        </div>
+        <form action="/dashboard">
+            <div class="form-container">
+                <div>
+                    <input class="button" type="submit" title="Go Back to Dashboard">
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 
 </html>
