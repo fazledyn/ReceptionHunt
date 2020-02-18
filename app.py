@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25), nullable=False, unique=True)
@@ -24,7 +25,7 @@ class User(UserMixin, db.Model):
     last_time = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return "ID: %r" %self.id + " Name: " + self.name + " Pass: " + self.pwd
+        return "ID: %r" % self.id + " Name: " + self.name + " Pass: " + self.pwd
 
 
 class Quiz(db.Model):
@@ -33,6 +34,16 @@ class Quiz(db.Model):
 
     def __repr__(self):
         return "ID: " + str(self.id) + " Answer: " + self.answer
+
+
+class Answers(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    level = db.Column(db.Integer, nullable=False)
+    team = db.Column(db.String(25), nullable=False)
+    answer = db.Column(db.String(40), nullable=False)
+
+    def __repr__(self):
+        return "Level: " + str(self.level) + " Team: " + self.team + " Answer: " + self.answer
 
 
 @login_manager.user_loader
@@ -44,7 +55,7 @@ def load_user(user_id):
 def index():
     if request.method == 'GET':
         return render_template("index.html")
-        
+
     elif request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
@@ -70,20 +81,19 @@ def puzzle():
     if request.method == 'POST':
         current_level = current_user.level_completed + 1
 
-        if current_level >= 8:
+        if current_level > 10:
             return redirect(url_for("congrats"))
         else:
             answer = request.form.get("answer")
-            answer = answer.lower()
+            answer_lower = answer.lower()
             current_puzzle_no = current_user.token[current_level-1]
             current_puzzle = Quiz.query.filter_by(id=current_puzzle_no).first()
 
-            print("curr level: ", current_level)
-            print("curr puzz no: ", current_puzzle_no)
-            print(current_puzzle)
+            answer_record = Answers(level=current_level, team=current_user.name, answer=answer)
+            db.session.add(answer_record)
+            db.session.commit()
 
-
-            if answer == current_puzzle.answer:
+            if answer_lower == current_puzzle.answer:
                 user = User.query.filter_by(name=current_user.name).first()
                 new_level = user.level_completed + 1
                 user.last_time = datetime.now()
@@ -94,28 +104,29 @@ def puzzle():
             else:
                 user = User.query.filter_by(name=current_user.name).first()
 
-            imageFile = "images/" + str(current_user.level_completed + 1) + ".JPG"
+            imageFile = "images/" + current_user.token[current_user.level_completed] + ".JPG"
             image_link = url_for('static', filename=imageFile)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
     elif request.method == 'GET':
-        if current_user.level_completed >= 8:
+
+        if current_user.level_completed > 10:
             return redirect(url_for("congrats"))
         else:
-            puzzle_no = current_user.token[current_user.level_completed-1]
-            #imageFile = "images/" + str(current_user.level_completed + 1) + ".JPG"
-            imageFile = "images/" + str(puzzle_no) + ".JPG"
+            imageFile = "images/" + current_user.token[current_user.level_completed] + ".JPG"
             image_link = url_for('static', filename=imageFile)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
     else:
         return "You're not supposed to be here !"
 
+
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
 
 @app.route("/congrats")
 @login_required
@@ -124,12 +135,68 @@ def congrats():
     return render_template("congrats.html", finish_time=time)
 
 
-@app.route("/dashboard")
+@app.route("/leaderboard")
 @login_required
-def dashboard():
+def leaderboard():
     # ordering the leaderboard by the user standings in a descending order
-    user_list = User.query.order_by(User.level_completed.desc(), User.last_time.asc())
-    return render_template("dashboard.html", user_list=user_list)
+    user_list = User.query.order_by(
+        User.level_completed.desc(), User.last_time.asc())
+    return render_template("leaderboard.html", user_list=user_list)
+
+
+@app.route("/admin", methods=['GET', 'POST'])
+def admin():
+    if request.method == 'GET':
+        return render_template("admin_login.html")
+
+    elif request.method == 'POST':
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == "root" and password == "toor":
+            return redirect(url_for("admin_dashboard"))
+        else:
+            return redirect(url_for("admin"))
+
+    else:
+        return "Backend fucked up badly !"
+
+
+@app.route("/team_reg", methods=['GET', 'POST'])
+def team_reg():
+    if request.method == 'GET':
+        return render_template("team_register.html")
+    elif request.method == 'POST':
+        teamname = request.form.get("teamname")
+        password = request.form.get("password")
+        token = request.form.get("token")
+
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        user = User(name=teamname, pwd=password_hash, token=token)
+        db.session.add(user)
+        db.session.commit()
+
+        return render_template("team_register.html")
+    else:
+        return "Backend fucked up badly !"
+
+
+@app.route("/admin_dashboard", methods=['GET', 'POST'])
+def admin_dashboard():
+    if request.method == 'GET':
+        answer_list = Answers.query.order_by(Answers.level.asc())
+        return render_template("answer_page.html", answer_list=answer_list)
+
+    elif request.method == 'POST':
+        teamname = request.form.get("teamname")
+        level = request.form.get("level")
+        level = int(level)
+
+        answer_list = Answers.query.filter_by(team=teamname, level=level)
+        return render_template("answer_page.html", answer_list=answer_list)
+
+    else:
+        return "Backend fucked up badly !"
 
 
 if __name__ == "__main__":
