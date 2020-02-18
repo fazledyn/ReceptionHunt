@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hunt.db'
 app.config['SECRET_KEY'] = 'TOR_BAAP_ATAF'
 
 db = SQLAlchemy(app)
@@ -104,7 +104,7 @@ def puzzle():
             else:
                 user = User.query.filter_by(name=current_user.name).first()
 
-            imageFile = "images/" + current_user.token[current_user.level_completed] + ".JPG"
+            imageFile = "images/" + current_user.token[current_user.level_completed] + ".png"
             image_link = url_for('static', filename=imageFile)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
@@ -113,7 +113,7 @@ def puzzle():
         if current_user.level_completed > 10:
             return redirect(url_for("congrats"))
         else:
-            imageFile = "images/" + current_user.token[current_user.level_completed] + ".JPG"
+            imageFile = "images/" + current_user.token[current_user.level_completed] + ".png"
             image_link = url_for('static', filename=imageFile)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
