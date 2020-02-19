@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
 }
 
 li,
@@ -19,10 +20,6 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 30px 10%;
-}
-
-.logo {
-    cursor: pointer;
 }
 
 .navigation-list {
@@ -50,35 +47,21 @@ body {
     background-color: darkslategray;
 }
 
-.puzzle-container {
-    width: 550px;
+.login-box {
+    width: 450px;
     position: absolute;
-    top: 400px;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
 }
 
-.image-container {
+.login-box h1 {
     width: 100%;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-container img {
-    align-content: center;
-    align-self: center;
-    width: 100%;
-    height: auto;
-    orientation: landscape;
-    alt: "puzzle";
-}
-
-.puzzle-container h2 {
-    justify-content: center;
-    align-items: center;
     text-align: center;
-    font-family: sans-serif;
+    color: white;
+    float: left;
+    font-size: 30px;
 }
 
 .textbox input {
@@ -87,7 +70,7 @@ body {
     background: none;
     color: white;
     font-size: 18px;
-    width: 100%;
+    width: 80%;
     float: left;
     margin: 0 10px;
 }

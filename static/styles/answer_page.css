@@ -79,3 +79,23 @@ header {
 .content-table tbody tr:last-of-type {
     border-bottom: 2px solid darkslategray;
 }
+
+.button {
+    font-family: sans-serif;
+    width: 10%;
+    height: 30px;
+    border: 2px solid whitesmoke;
+    color: darkslategrey;
+    padding: 2px;
+    font-size: 12px;
+}
+
+.textbox {
+    width: 10%;
+    height: 25px;
+    overflow: hidden;
+    border: 0.5px solid black;
+    font-size: 12px;
+    padding: 8px 2px;
+    margin: 8px 2px;
+}
