@@ -3,13 +3,13 @@
 
 ##  Project Overview
 Core framework: Flask (Python), Database (SQLite)
- 1. **Requirements**
+ 1. **Requirements** <br>
  Create a Virtual Environment using python's module **virtualenv**. And install the packages mentioned in the "**requirements.txt**" file.
 
-2. **Activate the environment**
+2. **Activate the environment** <br>
 In the app directory, open **cmd** or **terminal** and type in- `Scripts\activate.bat` and hit enter. Your **virtualenv** should activate.
 
-3. **Launching the app**
+3. **Launching the app**<br>
 In the **virtualenv**, type `python app.py` to start the server. After it starts, go to browser and type in "`localhost:5000`" to see the flask app running.
 
 ## Project Structure
