@@ -1,11 +1,12 @@
-import hashlib
 import time
+import hashlib
 
 from flask import Flask, request, redirect, url_for
 from flask import render_template
 from flask_login import UserMixin, LoginManager, login_user, current_user, login_required, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hunt.db'
@@ -15,6 +16,8 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+#####################################################################################
+############################# DATABASE MODELS #######################################
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +48,11 @@ class Answers(db.Model):
     def __repr__(self):
         return "Level: " + str(self.level) + " Team: " + self.team + " Answer: " + self.answer
 
+############################# DATABASE MODELS #######################################
+#####################################################################################
+
+#####################################################################################
+############################## ROUTE HANDLERS #######################################
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -71,7 +79,6 @@ def index():
         if user is not None and password == user.pwd:
             user_is_logged_in = True
             login_user(user)
-            print(user)
             return redirect(url_for("puzzle"))
         else:
             return redirect(url_for("index"))
@@ -116,7 +123,6 @@ def puzzle():
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
     elif request.method == 'GET':
-        print(current_user.level_completed)
 
         if current_user.level_completed >= TOTAL_QUIZ:
             return redirect(url_for("congrats"))
@@ -208,7 +214,9 @@ def admin_dashboard():
 
     else:
         return "Backend fucked up badly !"
-
+        
+############################## ROUTE HANDLERS #######################################
+#####################################################################################
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
