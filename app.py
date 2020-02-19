@@ -83,10 +83,12 @@ def index():
 @app.route("/puzzle", methods=['GET', 'POST'])
 @login_required
 def puzzle():
+    TOTAL_QUIZ = len(Quiz.query.all())
+
     if request.method == 'POST':
         current_level = current_user.level_completed + 1
 
-        if current_level > 10:
+        if current_level >= TOTAL_QUIZ:
             return redirect(url_for("congrats"))
         else:
             answer = request.form.get("answer")
@@ -114,8 +116,9 @@ def puzzle():
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
 
     elif request.method == 'GET':
+        print(current_user.level_completed)
 
-        if current_user.level_completed > 10:
+        if current_user.level_completed >= TOTAL_QUIZ:
             return redirect(url_for("congrats"))
         else:
             imageFile = "images/" + current_user.token[current_user.level_completed] + ".png"
@@ -136,8 +139,7 @@ def logout():
 @app.route("/congrats")
 @login_required
 def congrats():
-    time = "THIS_IS_TIME_STAMP"
-    return render_template("congrats.html", finish_time=time)
+    return render_template("congrats.html")
 
 
 @app.route("/leaderboard")
