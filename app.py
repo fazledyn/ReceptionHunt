@@ -51,6 +51,11 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for("index"))
+
+
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
@@ -190,9 +195,13 @@ def admin_dashboard():
     elif request.method == 'POST':
         teamname = request.form.get("teamname")
         level = request.form.get("level")
-        level = int(level)
 
-        answer_list = Answers.query.filter_by(team=teamname, level=level)
+        if level == "":
+            answer_list = Answers.query.filter_by(team=teamname)
+        else:
+            level_int = int(level)
+            answer_list = Answers.query.filter_by(team=teamname, level=level_int)
+
         return render_template("answer_page.html", answer_list=answer_list)
 
     else:
