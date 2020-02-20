@@ -94,10 +94,15 @@ def puzzle():
 
     if request.method == 'POST':
         current_level = current_user.level_completed + 1
+        print("POST")
+        print(current_level)
 
-        if current_level >= TOTAL_QUIZ:
+        if current_level > TOTAL_QUIZ:
+            print("POST + CURRENT_LEVEL == TOTAL_QUIZ")
             return redirect(url_for("congrats"))
+
         else:
+            print("POST + ")
             answer = request.form.get("answer")
             answer_lower = answer.lower()
             current_puzzle_no = current_user.token[current_level-1]
@@ -118,15 +123,16 @@ def puzzle():
             else:
                 user = User.query.filter_by(name=current_user.name).first()
 
-            imageFile = "images/" + current_user.token[current_user.level_completed] + ".png"
-            image_link = url_for('static', filename=imageFile)
-            return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
+            return redirect(url_for("puzzle"))
 
     elif request.method == 'GET':
 
-        if current_user.level_completed >= TOTAL_QUIZ:
+        if current_user.level_completed == TOTAL_QUIZ:
+            print("GET + CURRENT_LEVEL == TOTAL_QUIZ")
             return redirect(url_for("congrats"))
         else:
+            print("GET ELSE")
+            print("Current User Level Completed: ", current_user.level_completed)
             imageFile = "images/" + current_user.token[current_user.level_completed] + ".png"
             image_link = url_for('static', filename=imageFile)
             return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
@@ -219,4 +225,4 @@ def admin_dashboard():
 #####################################################################################
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
