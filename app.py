@@ -26,6 +26,7 @@ class User(UserMixin, db.Model):
     token = db.Column(db.String(10), nullable=False)
     level_completed = db.Column(db.Integer, default=0)
     last_time = db.Column(db.DateTime, default=datetime.utcnow)
+    role = db.Column(db.String(10), default="TEAM")
 
     def __repr__(self):
         return "ID: %r" % self.id + " Name: " + self.name + " Pass: " + self.pwd
@@ -48,11 +49,13 @@ class Answers(db.Model):
     def __repr__(self):
         return "Level: " + str(self.level) + " Team: " + self.team + " Answer: " + self.answer
 
+
 ############################# DATABASE MODELS #######################################
 #####################################################################################
 
 #####################################################################################
 ############################## ROUTE HANDLERS #######################################
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -158,11 +161,10 @@ def congrats():
 @login_required
 def leaderboard():
     # ordering the leaderboard by the user standings in a descending order
-    user_list = User.query.order_by(
-        User.level_completed.desc(), User.last_time.asc())
+    user_list = User.query.filter_by(role="TEAM").order_by(User.level_completed.desc(), User.last_time.asc())
     return render_template("leaderboard.html", user_list=user_list)
 
-
+@login_required
 @app.route("/admin", methods=['GET', 'POST'])
 def admin():
     if request.method == 'GET':
@@ -171,55 +173,70 @@ def admin():
     elif request.method == 'POST':
         username = request.form.get("username")
         password = request.form.get("password")
-
-        if username == "root" and password == "toor":
+        print(username, password)
+        if username == "admin" and password == "admin":
+            admin_user = User.query.filter_by(name=username).first()
+            login_user(admin_user)
             return redirect(url_for("admin_dashboard"))
         else:
             return redirect(url_for("admin"))
 
-    else:
-        return "Backend fucked up badly !"
+    else: 
+        return redirect(url_for("index"))
 
-
+@login_required
 @app.route("/team_reg", methods=['GET', 'POST'])
 def team_reg():
-    if request.method == 'GET':
-        return render_template("team_register.html")
-    elif request.method == 'POST':
-        teamname = request.form.get("teamname")
-        password = request.form.get("password")
-        token = request.form.get("token")
+    if current_user.name == "admin":
+        if request.method == 'GET':
+            return render_template("team_register.html")
 
-        password_hash = hashlib.sha256(password.encode()).hexdigest()
-        user = User(name=teamname, pwd=password_hash, token=token)
-        db.session.add(user)
-        db.session.commit()
+        elif request.method == 'POST':
+            teamname = request.form.get("teamname")
+            password = request.form.get("password")
+            token = request.form.get("token")
 
-        return render_template("team_register.html")
+            password_hash = hashlib.sha256(password.encode()).hexdigest()
+            user = User(name=teamname, pwd=password_hash, token=token)
+            db.session.add(user)
+            db.session.commit()
+
+            return render_template("team_register.html")
+        else:
+            return "Backend fucked up badly !"
     else:
-        return "Backend fucked up badly !"
+        return redirect(url_for("index"))
 
-
+@login_required
 @app.route("/admin_dashboard", methods=['GET', 'POST'])
 def admin_dashboard():
-    if request.method == 'GET':
-        answer_list = Answers.query.order_by(Answers.level.asc())
-        return render_template("answer_page.html", answer_list=answer_list)
+    if current_user.name == "admin":
 
-    elif request.method == 'POST':
-        teamname = request.form.get("teamname")
-        level = request.form.get("level")
+        if request.method == 'GET':
+            answer_list = Answers.query.order_by(Answers.level.asc())
+            return render_template("answer_page.html", answer_list=answer_list)
 
-        if level == "":
-            answer_list = Answers.query.filter_by(team=teamname)
+        elif request.method == 'POST':
+            teamname = request.form.get("teamname")
+            level = request.form.get("level")
+
+            if level == "" and teamname != "":
+                answer_list = Answers.query.filter_by(team=teamname)
+            elif teamname == "" and level != "":
+                level_int = int(level)
+                answer_list = Answers.query.filter_by(level=level_int)
+            elif level != "" and teamname != "":
+                level_int = int(level)
+                answer_list = Answers.query.filter_by(team=teamname, level=level_int)
+            else:
+                answer_list = Answers.query.order_by(Answers.level.asc())
+
+            return render_template("answer_page.html", answer_list=answer_list)
+
         else:
-            level_int = int(level)
-            answer_list = Answers.query.filter_by(team=teamname, level=level_int)
-
-        return render_template("answer_page.html", answer_list=answer_list)
-
+            return "Backend fucked up badly !"
     else:
-        return "Backend fucked up badly !"
+        return redirect(url_for("index"))
         
 ############################## ROUTE HANDLERS #######################################
 #####################################################################################

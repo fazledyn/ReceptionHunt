@@ -3,6 +3,7 @@ from app import db, User, Quiz
 
 print("Press 1 to input user")
 print("Press 2 to input puzzle")
+print("Press 3 to input admin")
 
 choice = input("Enter choice: ")
 
@@ -40,6 +41,17 @@ elif choice=="2":
               db.session.add(quiz)
               print("Quiz has been added !")
        
+       db.session.commit()
+
+elif choice=="3":
+       adminName = input("Enter team name: ")
+       adminPass = input("Enter password: ")
+       token = input("Enter token: ")
+
+       password_hash = hashlib.sha256(adminPass.encode()).hexdigest()
+       user = User(name=adminName, pwd=password_hash, token=token, role="ADMIN")
+       db.session.add(user)
+
        db.session.commit()
 
 else:
