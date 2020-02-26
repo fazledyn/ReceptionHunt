@@ -15,7 +15,8 @@ a {
 }
 
 header {
-    background-color: darkolivegreen;
+    background-color: rgb(205, 255, 67);
+    color: black;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -10,12 +10,13 @@ a {
     font-family: sans-serif;
     font-weight: 500;
     font-size: 16px;
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
 header {
-    background-color: darkolivegreen;
+    background-color: #FFCC00;
+    color: black;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,7 +37,7 @@ header {
 }
 
 .navigation-list li a:hover {
-    color: whitesmoke;
+    color: black;
 }
 
 .content-table {
@@ -58,8 +59,8 @@ header {
 }
 
 .content-table thead tr {
-    background-color: darkslategray;
-    color: white;
+    background-color: rgb(255, 215, 56);
+    color: black;
     text-align: center;
     font-weight: bold;
 }
@@ -70,11 +71,11 @@ header {
 }
 
 .content-table tbody tr {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid rgb(151, 148, 148);
 }
 
 .content-table tbody tr:nth-of-type(even) {
-    background-color: whitesmoke;
+    background-color: rgb(255, 252, 86);
 }
 
 .content-table tbody tr:last-of-type {
