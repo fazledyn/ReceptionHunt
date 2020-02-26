@@ -21,9 +21,9 @@ login_manager.init_app(app)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(25), nullable=False, unique=True)
+    name = db.Column(db.String(40), nullable=False, unique=True)
     pwd = db.Column(db.String(80), nullable=False)
-    token = db.Column(db.String(10), nullable=False)
+    token = db.Column(db.String(30), nullable=False)
     level_completed = db.Column(db.Integer, default=0)
     last_time = db.Column(db.DateTime, default=datetime.utcnow)
     role = db.Column(db.String(10), default="TEAM")
@@ -34,7 +34,8 @@ class User(UserMixin, db.Model):
 
 class Quiz(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    answer = db.Column(db.String(20), unique=True)
+    name = db.Column(db.String(5), unique=True, nullable=False)
+    answer = db.Column(db.String(30), unique=True, nullable=False)
 
     def __repr__(self):
         return "ID: " + str(self.id) + " Answer: " + self.answer
@@ -42,12 +43,12 @@ class Quiz(db.Model):
 
 class Answers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    level = db.Column(db.Integer, nullable=False)
+    level_name = db.Column(db.String(5), nullable=False)
     team = db.Column(db.String(25), nullable=False)
-    answer = db.Column(db.String(40), nullable=False)
+    answer = db.Column(db.String(60), nullable=False)
 
     def __repr__(self):
-        return "Level: " + str(self.level) + " Team: " + self.team + " Answer: " + self.answer
+        return "Level: " + self.level + " Team: " + self.team + " Answer: " + self.answer
 
 
 ############################# DATABASE MODELS #######################################
@@ -108,13 +109,20 @@ def puzzle():
             print("POST + ")
             answer = request.form.get("answer")
             answer_lower = answer.lower()
-            current_puzzle_no = current_user.token[current_level-1]
-            current_puzzle = Quiz.query.filter_by(id=current_puzzle_no).first()
+            print(answer)
+            
+            current_puzzle_name = current_user.token[current_level-1]
+            print("Current puzzle name:")
+            print(current_puzzle_name)
 
-            answer_record = Answers(level=current_level, team=current_user.name, answer=answer)
+            current_puzzle = Quiz.query.filter_by(name=current_puzzle_name).first()
+            print("Current puzzle:")
+            print(current_puzzle)
+
+            answer_record = Answers(level_name=current_puzzle_name, team=current_user.name, answer=answer)
             db.session.add(answer_record)
             db.session.commit()
-
+            
             if answer_lower == current_puzzle.answer:
                 user = User.query.filter_by(name=current_user.name).first()
                 new_level = user.level_completed + 1
@@ -136,9 +144,11 @@ def puzzle():
         else:
             print("GET ELSE")
             print("Current User Level Completed: ", current_user.level_completed)
-            imageFile = "images/" + current_user.token[current_user.level_completed] + ".png"
+            imageFile = "images/" + current_user.token[current_user.level_completed] + ".jpg"
             image_link = url_for('static', filename=imageFile)
-            return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
+            level = int(current_user.level_completed/2) + 1
+            #return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)
+            return render_template("puzzle.html", level=level, image_link=image_link)
 
     else:
         return "You're not supposed to be here !"
@@ -163,6 +173,7 @@ def leaderboard():
     # ordering the leaderboard by the user standings in a descending order
     user_list = User.query.filter_by(role="TEAM").order_by(User.level_completed.desc(), User.last_time.asc())
     return render_template("leaderboard.html", user_list=user_list)
+
 
 @login_required
 @app.route("/admin", methods=['GET', 'POST'])

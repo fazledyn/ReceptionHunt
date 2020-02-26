@@ -33,24 +33,31 @@ elif choice=="2":
        totalPuzzle = input("Total puzzle number: ")
        totalPuzzle = int(totalPuzzle)
 
-       for i in range(totalPuzzle):
-              print("Quiz no: ", i+1)
-              answer = input("Enter the answer: ")
+       file = open("puzzle.txt", "r")
 
-              quiz = Quiz(answer=answer)
+       for i in range(totalPuzzle):
+              puzzle_name = file.readline()
+              answer = file.readline()
+
+              print(puzzle_name)
+              print(answer)
+
+              quiz = Quiz(answer=answer, name=puzzle_name)
               db.session.add(quiz)
               print("Quiz has been added !")
        
+       file.close()
        db.session.commit()
 
 elif choice=="3":
-       adminName = input("Enter team name: ")
+       adminName = input("Enter name: ")
        adminPass = input("Enter password: ")
        token = input("Enter token: ")
 
        password_hash = hashlib.sha256(adminPass.encode()).hexdigest()
        user = User(name=adminName, pwd=password_hash, token=token, role="ADMIN")
        db.session.add(user)
+       print("Admin added !")
 
        db.session.commit()
 
