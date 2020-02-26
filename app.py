@@ -144,7 +144,9 @@ def puzzle():
         else:
             print("GET ELSE")
             print("Current User Level Completed: ", current_user.level_completed)
-            imageFile = "images/" + current_user.token[current_user.level_completed] + ".jpg"
+            imageHash = hashlib.sha256(current_user.token[current_user.level_completed].encode()).hexdigest()
+            imageFile = "images/" + imageHash + ".jpg"
+            print(imageFile)
             image_link = url_for('static', filename=imageFile)
             level = int(current_user.level_completed/2) + 1
             #return render_template("puzzle.html", level=current_user.level_completed+1, image_link=image_link)

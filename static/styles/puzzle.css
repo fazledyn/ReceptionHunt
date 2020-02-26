@@ -53,7 +53,7 @@ body {
 .puzzle-container {
     width: 550px;
     position: absolute;
-    top: 400px;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;

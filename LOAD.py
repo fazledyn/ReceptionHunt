@@ -41,6 +41,7 @@ elif choice=="2":
               puzzle_name = lines[count]
               count += 1
               answer = lines[count]
+              answer = answer.lower()
               count += 1
 
               print(puzzle_name)
