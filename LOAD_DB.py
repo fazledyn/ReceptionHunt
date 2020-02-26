@@ -34,10 +34,14 @@ elif choice=="2":
        totalPuzzle = int(totalPuzzle)
 
        file = open("puzzle.txt", "r")
+       lines = file.read().splitlines()
+       count = 0
 
        for i in range(totalPuzzle):
-              puzzle_name = file.readline()
-              answer = file.readline()
+              puzzle_name = lines[count]
+              count += 1
+              answer = lines[count]
+              count += 1
 
               print(puzzle_name)
               print(answer)
