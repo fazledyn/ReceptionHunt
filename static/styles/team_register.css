@@ -10,7 +10,7 @@ a {
     font-family: sans-serif;
     font-weight: 500;
     font-size: 16px;
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
@@ -37,15 +37,15 @@ header {
 }
 
 .navigation-list li a:hover {
-    color: whitesmoke;
+    color: grey;
 }
 
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    color: white;
-    background-color: darkslategray;
+    color: black;
+    background-color: white;
 }
 
 .login-box {
@@ -54,13 +54,13 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
+    color: black;
 }
 
 .login-box h1 {
     width: 100%;
     text-align: center;
-    color: white;
+    color: black;
     float: left;
     font-size: 30px;
 }
@@ -69,7 +69,7 @@ body {
     border: none;
     outline: none;
     background: none;
-    color: white;
+    color: black;
     font-size: 18px;
     width: 80%;
     float: left;
@@ -81,7 +81,7 @@ body {
     width: 100%;
     height: 40px;
     background: none;
-    border: 2px solid white;
+    border: 2px solid black;
     color: white;
     padding: 5px;
     font-size: 20px;
@@ -93,5 +93,5 @@ body {
     font-size: 20px;
     padding: 8px 0;
     margin: 8px 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid black;
 }

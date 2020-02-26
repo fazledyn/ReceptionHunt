@@ -187,7 +187,7 @@ def admin():
         username = request.form.get("username")
         password = request.form.get("password")
         print(username, password)
-        if username == "admin" and password == "admin":
+        if username == "admin" and password == "insomnist":
             admin_user = User.query.filter_by(name=username).first()
             login_user(admin_user)
             return redirect(url_for("admin_dashboard"))
@@ -226,7 +226,7 @@ def admin_dashboard():
     if current_user.name == "admin":
 
         if request.method == 'GET':
-            answer_list = Answers.query.order_by(Answers.level.asc())
+            answer_list = Answers.query.order_by(Answers.level_name.asc())
             return render_template("answer_page.html", answer_list=answer_list)
 
         elif request.method == 'POST':
