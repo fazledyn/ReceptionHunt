@@ -236,11 +236,11 @@ def admin_dashboard():
             if level == "" and teamname != "":
                 answer_list = Answers.query.filter_by(team=teamname)
             elif teamname == "" and level != "":
-                level_int = int(level)
-                answer_list = Answers.query.filter_by(level=level_int)
+                level_int = level
+                answer_list = Answers.query.filter_by(level_name=level_int)
             elif level != "" and teamname != "":
-                level_int = int(level)
-                answer_list = Answers.query.filter_by(team=teamname, level=level_int)
+                level_int = level
+                answer_list = Answers.query.filter_by(team=teamname, level_name=level_int)
             else:
                 answer_list = Answers.query.order_by(Answers.level.asc())
 
