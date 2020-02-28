@@ -11,7 +11,7 @@
         <nav>
             <ul class="navigation-list">
                 <li>
-                    <a href="/admin_dashboard">Dashboard</a>
+                    <a href="/admin_dashboard">Admin Dashboard</a>
                 </li>
                 <li>
                     <a href="/team_reg">Team Registration</a>
@@ -44,7 +44,7 @@
             {%for item in answer_list%}
             <tr>
                 <td>{{loop.index}}</td>
-                <td>{{item.level}}</td>
+                <td>{{item.level_name}}</td>
                 <td>{{item.team}}</td>
                 <td>{{item.answer}}</td>
             </tr>

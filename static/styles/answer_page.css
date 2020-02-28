@@ -10,12 +10,13 @@ a {
     font-family: sans-serif;
     font-weight: 500;
     font-size: 16px;
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
 header {
-    background-color: darkolivegreen;
+    background-color: #FF9900;
+    color: black;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,7 +37,7 @@ header {
 }
 
 .navigation-list li a:hover {
-    color: whitesmoke;
+    color: grey;
 }
 
 .content-table {
